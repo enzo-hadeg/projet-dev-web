@@ -1,9 +1,6 @@
 <?php include("inc/header.inc.php"); ?>
 <?php
 
-session_start();
- 
- var_dump($_POST);
 if(isset($_GET['id']) AND $_GET['id'] > 0) {
    $getid = intval($_GET['id']);
    $requser = $dbh->prepare('SELECT * FROM user WHERE id_user = ?');
@@ -22,8 +19,7 @@ if(isset($_GET['id']) AND $_GET['id'] > 0) {
          if(isset($_SESSION['id']) AND $userinfo['id'] == $_SESSION['id']) {
          ?>
          <br />
-         <a href="profile-edition.php">Modifier</a>
-         <a href="deconnexion.php">Se déconnecter</a>
+         <input type="submit" href="profile-edition.php">Modifier</a>
          <?php
          }
          ?>

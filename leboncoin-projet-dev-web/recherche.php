@@ -41,8 +41,8 @@
 <?php 
 $con = new PDO('mysql:host=localhost;port=3306;dbname=leboncoin-devweb', 'root', '', array( PDO::ATTR_PERSISTENT => false));
 if(isset($_POST["submit"])){
-   $str=$_POST["annonces"];
-   $sth=$con->prepare("SELECT * FROM annonces WHERE Titre LIKE '$str'");
+   $q=$_POST["annonces"];
+   $sth=$con->prepare("SELECT * FROM annonces WHERE Titre LIKE '%$q%'");
 
    $sth-> setFetchMode(PDO:: FETCH_OBJ);
    $sth-> execute();
@@ -51,11 +51,10 @@ if(isset($_POST["submit"])){
    {
       ?>
 <div class="card mb-3">
-  <img src="" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title" ><?php echo $row->Titre; ?></h5>
     <p class="card-text"><?php echo $row->Description; ?></p>
-    <p class="card-text"><?php echo $row->Prix; ?></p>
+    <p class="card-text"><?php echo $row->Prix; ?>€</p>
     <p class="card-text"><small class="text-muted"><?php echo $row->Date_annonce; ?></small></p>
   </div>
 <?php 

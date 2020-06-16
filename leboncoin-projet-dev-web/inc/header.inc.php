@@ -1,19 +1,6 @@
 <?php
-
-    //Start session
-
-    session_start();    
-
-    //Unset the variables stored in session
-
-    unset($_SESSION['SESS_MEMBER_ID']);
-
-    unset($_SESSION['SESS_FIRST_NAME']);
-
-    unset($_SESSION['SESS_LAST_NAME']);
-
+  session_start();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,13 +23,23 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="recherche.php">Recherce<span class="sr-only"></span></a>
+        <a class="nav-link" href="recherche.php">Recherche<span class="sr-only"></span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="annonce.php">Annonce</a>
       </li>
       <li class="nav-item">
+      <?php
+        if (! isset($_SESSION['id_user'])) {
+      ?>
         <a class="nav-link" href="connexion.php">Connexion</a>
+        <?php
+        } else {
+          ?>
+          <a class="nav-link" href="deconnexion.php">Déconnexion</a>
+          <?php
+        }
+        ?>
       </li>
       </li>
     </ul>

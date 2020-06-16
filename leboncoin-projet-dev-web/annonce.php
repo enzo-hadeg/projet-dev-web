@@ -11,10 +11,17 @@ $stmt = $dbh->prepare("SELECT * FROM ANNONCES");
 {
 ?>
 <div class="card mb-3">
-  <img src="" class="card-img-top" alt="...">
+  <?php 
+  if (!empty($rs['image']))
+  {
+  ?>
+  <img src="annonce/images/<?php echo $rs["image"] ?>" class="card-img-top" alt="...">
+  <?php
+  }
+  ?>
   <div class="card-body">
     <h5 class="card-title" ><?php echo $rs["Titre"] ?></h5>
-    <p class="card-text"><?php echo $rs["Prix"] ?></p>
+    <p class="card-text"><?php echo $rs["Prix"] ?>€</p>
     <p class="card-text"><?php echo $rs["Description"] ?></p>
     <p class="card-text"><small class="text-muted"><?php echo $rs["Date_annonce"] ?></small></p>
   </div>
@@ -61,3 +68,4 @@ unset($stmt);
   print "Error!: " . $e->getMessage() . "<br/>";
   die();
 }
+ include("inc/footer.inc.php"); ?>

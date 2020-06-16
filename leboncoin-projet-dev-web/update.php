@@ -17,6 +17,7 @@ if (isset($_POST['enregistrerAnnonce'])) {
     $requeteSQL = "DELETE FROM annonces WHERE id_annonce = $id";
     $result = $dbh->exec($requeteSQL);
     echo $result . ' suppression effectuée <br>';
+    header('Location: annonce.php');
 } else {
     $id = htmlentities($_POST["id_annonce"], ENT_QUOTES);
     $titre = htmlentities($_POST["Titre"], ENT_QUOTES);

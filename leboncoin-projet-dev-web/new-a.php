@@ -6,33 +6,40 @@ if (!empty($_POST)) {
     $description = htmlentities($_POST["description"], ENT_QUOTES);
     $date = htmlentities($_POST["date_annonce"], ENT_QUOTES);
 
-        $requeteSQL = "INSERT INTO annonces (`Titre`, `Prix`, `Description`, `Date_annonce`)";
-        $requeteSQL .= " VALUE ('$titre', '$prix', '$description', '$date')";
+    $result = $dbh->exec($requeteSQL);
+    echo $result . ' nouvelle annonce <br>';
 
-        $result = $dbh->exec($requeteSQL);
-        echo $result . ' nouvelle annonce <br>';
+ if(isset($_FILES['image']) AND !empty($_FILES['image']['name'])) {
+    $tailleMax = 2097152;
+    $extensionsValides = array('jpg', 'jpeg', 'gif', 'png');
+    if($_FILES['image']['size'] <= $tailleMax) {
+        $extensionUpload = strtolower(substr(strrchr($_FILES['image']['name'], '.'), 1));
+        if(in_array($extensionUpload, $extensionsValides)) {
+            $chemin = "annonce/images/".$_FILES['image']['name'];
+            
+            if(move_uploaded_file($_FILES['image']['tmp_name'], $chemin)) {
+                $requeteSQL = "INSERT INTO annonces (`Titre`, `Prix`, `Description`, `Date_annonce`, `image`)";
+                $requeteSQL .= " VALUE (:titre, :prix, :description, :date, :image)";
+                $updateavatar = $dbh->prepare($requeteSQL);
+                $updateavatar->execute(array(
+                    'image'         => $_FILES['image']['name'],
+                    'titre'         => htmlentities($_POST["titre"], ENT_QUOTES),
+                    'prix'          => htmlentities($_POST["prix"], ENT_QUOTES),
+                    'description'   => htmlentities($_POST["description"], ENT_QUOTES),
+                    'date'          => htmlentities($_POST["date_annonce"], ENT_QUOTES)
+                    ));
+                header('Location: annonce.php');
+            } else {
+                $msg = "Erreur durant l'importation de votre photo de profil";
+            }
+        } else {
+            $msg = "Votre photo de profil doit être au format jpg, jpeg, gif ou png";
+        }
+    } else {
+        $msg = "Votre photo de profil ne doit pas dépasser 2Mo";
+    }
+}
 
-
-  $msg = "";
-
-  // If upload button is clicked ...
-  if (isset($_POST['upload'])) {
-  	// Get image name
-  	$image = $_FILES['image']['name'];
-  	// image file directory
-  	$target = "img/".basename($image);
-
-  	$sql = "INSERT INTO  (image, ) VALUES ('$image')";
-  	// execute query
-  	mysqli_query($dbh, $sql);
-
-  	if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-  		$msg = "Image uploaded successfully";
-  	}else{
-  		$msg = "Failed to upload image";
-  	}
-  }
-  $result = mysqli_query($db, "SELECT * FROM images");
 }
 ?>
 <div class="starter-template">  
